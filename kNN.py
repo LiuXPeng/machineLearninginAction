@@ -34,7 +34,7 @@ def file2matrix(filename):
 	returnMat = zeros((numberOfLines, 3))
 	classLabelVector = []
 	index = 0
-	for line in arrayOLlines:
+	for line in arrayOLines:
 		line = line.strip()
 		listFromLine = line.split('\t')
 		returnMat[index, :] = listFromLine[0:3]
