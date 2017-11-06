@@ -5,6 +5,8 @@
 
 __author__ = 'lxp'
 
+from numpy import *
+
 def loadDataSet(fileName):
 	dataMat = []
 	labelMat = []
@@ -40,9 +42,9 @@ def smoSimple(dataMatIn, classLabels, C, toler, maxIter):
 		for i in range(m):
 			fXi = float(multiply(alphas, labelMat).T * (dataMatrix * dataMatrix[i, ].T)) + b
 			Ei = fXi - float(labelMat[i])
-			if ((labelsMat[i] * Ei < -toler) and (alphas[i] < C)) or ((labelMat[i] * Ei > toler) and (alphas[i] > 0)):
+			if ((labelMat[i] * Ei < -toler) and (alphas[i] < C)) or ((labelMat[i] * Ei > toler) and (alphas[i] > 0)):
 				j = selectJrand(i, m)
-				fXj = float(multiply(alphas, labelsMat).T * (dataMatrix * dataMatrix[j, :].T)) + b
+				fXj = float(multiply(alphas, labelMat).T * (dataMatrix * dataMatrix[j, :].T)) + b
 				Ej = fXj - float(labelMat[j])
 				alphaIold = alphas[i].copy()
 				alphaJold = alphas[j].copy() 
@@ -50,7 +52,7 @@ def smoSimple(dataMatIn, classLabels, C, toler, maxIter):
 					L = max(0, alphas[j] - alphas[i])
 					H = min(C, C + alphas[j] - alphas[i])
 				else:
-			   		L = max(0, alphas[j] - alphas[i])
+					L = max(0, alphas[j] - alphas[i])
 					H = min(C, alphas[j] + alphas[i])
 				if L == H:
 					print('L == H')
@@ -61,7 +63,7 @@ def smoSimple(dataMatIn, classLabels, C, toler, maxIter):
 					continue
 				alphas[j] -= labelMat[j] * (Ei - Ej) / eta
 				alphas[j] = clipAlpha(alphas[j], H, L)
-				if (alphas[j] - alphaJold) < 0.00001)
+				if (abs(alphas[j] - alphaJold) < 0.00001):
 					print('j not moving enough')
 					continue
 				alphas[i] += labelMat[j] * labelMat[i] * (alphaJold - alphas[j])
