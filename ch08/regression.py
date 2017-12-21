@@ -112,7 +112,9 @@ def stageWise(xArr, yArr, eps = 0.01, numIt = 100):
 		returnMat[i, :] = ws.T
 	return returnMat
 
+'''
 def searchForSet(retX, retY, setNum, yr, numPce, origPrc):
 	sleep(10)
-
-
+	myAPIstr = 'get from code.google.com'
+	searchURL = 'https://www.googleapis.com/shopping/search/v1/public/products?key=%s&country=US&q=lego
+'''
