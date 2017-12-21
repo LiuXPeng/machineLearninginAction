@@ -7,7 +7,7 @@ __author__ = 'lxp'
 
 import numpy as np
 from time import sleep
-import urllib2
+import urllib3
 
 def loadDataSet(fileName):
 	numFeat = len(open(fileName).readline().split('\t'))
