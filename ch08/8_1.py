@@ -18,4 +18,11 @@ yMat = np.mat(yArr)
 yHat = xMat * ws
 fig = plt.figure()
 ax = fig.add_subplot(111)
-ax.scatter(xMat[:, 1].flatter().A[0], yMat.T[:, 0].flatten().A[0])
+ax.scatter(xMat[:, 1].flatten().A[0], yMat.T[:, 0].flatten().A[0])
+xCopy = xMat.copy()
+xCopy.sort(0)
+yHat = xCopy * ws
+ax.plot(xCopy[:, 1], yHat)
+plt.show()
+yHat = xMat * ws
+print(np.corrcoef(yHat.T, yMat))
