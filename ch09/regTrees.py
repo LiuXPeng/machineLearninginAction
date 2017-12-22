@@ -12,13 +12,13 @@ def loadDataSet(fileName):
 	fr = open(fileName)
 	for line in fr.readlines():
 		curLine = line.strip().split('\t')
-		fltLine = map(float, curLine)
+		fltLine = list(map(float, curLine))
 		dataMat.append(fltLine)
 	return dataMat
 
 def binSplitDataSet(dataSet, feature, value):
-	mat0 = dataSet[nonzero(dataSet[:, feature] > value)[0], :][0]
-	mat1 = dataSet[nonzero(dataSet[:, feature] <= value)[0], :][0]
+	mat0 = dataSet[nonzero(dataSet[:, feature] > value)[0], :]
+	mat1 = dataSet[nonzero(dataSet[:, feature] <= value)[0], :]
 	return mat0, mat1
 
 def regLeaf(dataSet):
@@ -50,7 +50,7 @@ def chooseBestSplit(dataSet, leafType = regLeaf, errType = regErr, ops = (1, 4))
 	bestIndex = 0
 	bestValue = 0
 	for featIndex in range(n - 1):
-		for splitVal in set(dataSet[:, featIndex]):
+		for splitVal in set((dataSet[:, featIndex].T.A.tolist())[0]):
 			mat0, mat1 = binSplitDataSet(dataSet, featIndex, splitVal)
 			if (np.shape(mat0)[0] < tolN) or (np.shape(mat1)[0] < tolN):
 				continue
