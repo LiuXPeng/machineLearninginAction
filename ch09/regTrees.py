@@ -17,8 +17,8 @@ def loadDataSet(fileName):
 	return dataMat
 
 def binSplitDataSet(dataSet, feature, value):
-	mat0 = dataSet[nonzero(dataSet[:, feature] > value)[0], :]
-	mat1 = dataSet[nonzero(dataSet[:, feature] <= value)[0], :]
+	mat0 = dataSet[np.nonzero(dataSet[:, feature] > value)[0], :]
+	mat1 = dataSet[np.nonzero(dataSet[:, feature] <= value)[0], :]
 	return mat0, mat1
 
 def regLeaf(dataSet):
@@ -42,7 +42,7 @@ def createTree(dataSet, leafType = regLeaf, errType = regErr, ops = (1, 4)):
 def chooseBestSplit(dataSet, leafType = regLeaf, errType = regErr, ops = (1, 4)):
 	tolS = ops[0]
 	tolN = ops[1]
-	if len(set(dataSet[:, -1].T.tolist()[0]) == 1:
+	if len(set(dataSet[:, -1].T.tolist()[0])) == 1:
 		return None, leafType(dataSet)
 	m, n = np.shape(dataSet)
 	S = errType(dataSet)
