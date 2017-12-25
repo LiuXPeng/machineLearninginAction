@@ -59,7 +59,7 @@ def chooseBestSplit(dataSet, leafType = regLeaf, errType = regErr, ops = (1, 4))
 				bestIndex = featIndex
 				bestValue = splitVal
 				bestS = newS
-	if (S - bestS) < tols:
+	if (S - bestS) < tolS:
 		return None, leafType(dataSet)
 	mat0, mat1 = binSplitDataSet(dataSet, bestIndex, bestValue)
 	if (np.shape(mat0)[0] < tolN) or (np.shape(mat1)[0] < tolN):
