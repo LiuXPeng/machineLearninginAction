@@ -65,3 +65,29 @@ def chooseBestSplit(dataSet, leafType = regLeaf, errType = regErr, ops = (1, 4))
 	if (np.shape(mat0)[0] < tolN) or (np.shape(mat1)[0] < tolN):
 		return None, leafType(dataSet)
 	return bestIndex, bestValue
+
+def isTree(obj):
+	return (type(obj).__name__ == 'dict')
+
+def getMean(tree):
+	if isTree(tree['right']):
+		tree['right'] = getMean(tree['right'])
+	if isTree(tree['left']):
+		tree['left'] = getMean(tree['left'])
+	return (tree['left'] + tree['right']) / 2.0
+
+def prune(tree, testData):
+	if np.shape(testData)[0] == 0:
+		return getMean(tree)
+	if (isTree(tree['right']) or isTree(tree['tree'])):
+		lSet, rSet = binSplitDataSet(testData, tree['spInd'], tree['spVal'])
+		errorNoMerge = np.sum(power(lSet[:, -1] - tree['left'], 2)) + np.sum(rSet[:, -1] - tree['right'], 2))
+		treeMean = (tree['left'] + tree['right']) / 2.0
+		errorMerge = np.sum(power(testData[:, -1] - treeMean, 2))
+		if errorMerge < errorNoMerge:
+			print ("merging")
+			return treeMean
+		else:
+			reuturn treeMean
+	else:
+	 	return tree
