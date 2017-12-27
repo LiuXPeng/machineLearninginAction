@@ -79,15 +79,43 @@ def getMean(tree):
 def prune(tree, testData):
 	if np.shape(testData)[0] == 0:
 		return getMean(tree)
-	if (isTree(tree['right']) or isTree(tree['tree'])):
+	if (isTree(tree['left']) or isTree(tree['right'])):
 		lSet, rSet = binSplitDataSet(testData, tree['spInd'], tree['spVal'])
-		errorNoMerge = np.sum(power(lSet[:, -1] - tree['left'], 2)) + np.sum(rSet[:, -1] - tree['right'], 2))
+	if isTree(tree['left']):
+		tree['left'] = prune(tree['left'], lSet)
+	if isTree(tree['right']):
+		tree['right'] = prune(tree['right'], rSet)
+	if not isTree(tree['left']) and not isTree(tree['right']):
+		lSet, rSet = binSplitDataSet(testData, tree['spInd'], tree['spVal'])
+		errorNoMerge = np.sum(np.power(lSet[:, -1] - tree['left'], 2)) + np.sum(np.power(rSet[:, -1] - tree['right'], 2))
 		treeMean = (tree['left'] + tree['right']) / 2.0
-		errorMerge = np.sum(power(testData[:, -1] - treeMean, 2))
+		errorMerge = np.sum(np.power(testData[:, -1] - treeMean, 2))
 		if errorMerge < errorNoMerge:
 			print ("merging")
 			return treeMean
 		else:
-			reuturn treeMean
+			return tree
 	else:
 	 	return tree
+	 
+def linearSolve(dataSet):
+	m, n = np.shape(dataSet)
+	X = np.mat(np.ones(m, n))
+	Y = np.mat(np.ones(m, 1))
+	X[:, 1:n] = dataSet[:, 0:n-1]
+	Y = dataSet[:, -1]
+	xTx = X.T * X
+	if linalg.det(xTx) == 0.0:
+		raise NameError("This matrix is singular.")
+	ws = xTx.I * (X.T * Y)
+	return ws, X, Y
+	
+def modelLeaf(dataSet):
+	ws, X, Y = linearSolve(dataSet)
+	return ws
+
+def modelErr(dataSet):
+	ws, X, Y = linearSolve(dataSet)
+	yHat = X * ws
+	return np.sum(np.power(Y - yHat, 2))
+
