@@ -100,12 +100,12 @@ def prune(tree, testData):
 	 
 def linearSolve(dataSet):
 	m, n = np.shape(dataSet)
-	X = np.mat(np.ones(m, n))
-	Y = np.mat(np.ones(m, 1))
+	X = np.mat(np.ones((m, n)))
+	Y = np.mat(np.ones((m, 1)))
 	X[:, 1:n] = dataSet[:, 0:n-1]
 	Y = dataSet[:, -1]
 	xTx = X.T * X
-	if linalg.det(xTx) == 0.0:
+	if np.linalg.det(xTx) == 0.0:
 		raise NameError("This matrix is singular.")
 	ws = xTx.I * (X.T * Y)
 	return ws, X, Y
@@ -119,3 +119,32 @@ def modelErr(dataSet):
 	yHat = X * ws
 	return np.sum(np.power(Y - yHat, 2))
 
+def regTreeEval(model, inDat):
+	return float(model)
+
+def modelTreeEval(model, inDat):
+	n = np.shape(inDat)[1]
+	X = np.mat(np.ones((1, n + 1)))
+	X[:, 1:n + 1] = inDat
+	return float(X * model)
+
+def treeForeCast(tree, inData, modelEval = regTreeEval):
+	if not isTree(tree):
+		return modelTreeEval(tree, inData)
+	if inData[tree['spInd']] > tree['spVal']:
+	 	if isTree(tree['left']):
+			return treeForeCast(tree['left'], inData, modelEval)
+		else:
+			return modelEval(['left'], inData)
+	else:
+	 	if isTree(tree['right']):
+			return treeForeCast(tree['right'], inData, modelEval)
+		else:
+			return modelEval(['right'], inData)
+
+def createForeCast(tree, testData, modelEval = regTreeEval):
+	m = len(testData)
+	yHat = np.mat(np.zeros((m, 1)))
+	for i in range(m):
+		yHat[i, 0] = treeForeCast(tree, np.mat(testData[i]), modelEval)
+	return yHat
