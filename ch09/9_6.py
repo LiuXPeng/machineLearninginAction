@@ -8,8 +8,8 @@ __author__ = 'lxp'
 import regTrees
 import numpy as np
 
-trainMat = np.mat(regTrees.loaddataSet('bikeSpeedVsIq_train.txt'))
-testMat = np.mat(regTrees.loaddataSet('bikeSpeedVsIq_test.txt'))
+trainMat = np.mat(regTrees.loadDataSet('bikeSpeedVsIq_train.txt'))
+testMat = np.mat(regTrees.loadDataSet('bikeSpeedVsIq_test.txt'))
 myTree = regTrees.createTree(trainMat, ops = (1, 20))
 yHat = regTrees.createForeCast(myTree, testMat[:, 0])
 res = np.corrcoef(yHat, testMat[:, 1], rowvar = 0)[0, 1]
