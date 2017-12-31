@@ -27,7 +27,7 @@ def randCent(dataSet, k):
 	for j in range(n):
 		minJ = np.min(dataSet[:, j])
 		rangeJ = float(np.max(dataSet[:, j]) - minJ)
-		centroids[:, j] = minJ + rangeJ * np.random.rand(k, 1)
+		centroids[:, j] = np.mat(minJ + rangeJ * np.random.rand(k, 1))
 	return centroids
 
 def kMeans(dataSet, k, distMeas = distEclud, createCent = randCent):
@@ -79,15 +79,15 @@ def biKMeans(dataSet, k, distMeas = distEclud):
 		bestClustAss[np.nonzero(bestClustAss[:, 0].A == 0)[0], 0] = bestCentToSplit
 		print ("the bestCentToSplit is: ", bestCentToSplit)
 		print ("the len of bestClustAss is: ", len(bestClustAss))
-		centList[bestCentToSplit] = bestNewCents[0, :]
-		centList.append(bestNewCents[1, :])
+		centList[bestCentToSplit] = bestNewCents[0, :].tolist()[0]
+		centList.append(bestNewCents[1, :].tolist()[0])
 #		print ("*******")
 #		print (clusterAssment[:, 0].A)
 #		print (np.nonzero(clusterAssment[:, 0].A))
 #		print ("##########")
 		clusterAssment[np.nonzero(clusterAssment[:, 0].A == bestCentToSplit)[0], :] = bestClustAss
 #print (clusterAssment[:, 0])
-	return centList, clusterAssment
+	return np.mat(centList), clusterAssment
 
 def distSLC(vecA, vecB):
 	a = np.sin(vecA[0, 1] * np.pi / 180) * np.sin(vecB[0, 1] * np.pi / 180)
@@ -114,7 +114,7 @@ def clusterClubs(numClust = 5):
 		ptsInCurrCluster = datMat[np.nonzero(clustAssing[:, 0].A == i)[0], :]
 		markerStyle = scatterMarkers[i % len(scatterMarkers)]
 		ax1.scatter(ptsInCurrCluster[:, 0].flatten().A[0], ptsInCurrCluster[:, 1].flatten().A[0], marker = markerStyle, s = 90)
-		ax1.scatter(myCentroids[:, 0].flatten().A[0], myCentroids[:, 1].flatten().A[0], marker = '+', s = 300)
+	ax1.scatter(myCentroids[:, 0].flatten().A[0], myCentroids[:, 1].flatten().A[0], marker = '+', s = 300)
 	plt.show()
 		
 
