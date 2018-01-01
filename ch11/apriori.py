@@ -15,7 +15,7 @@ def createC1(dataSet):
 			if not [item] in C1:
 				C1.append([item])
 	C1.sort()
-	return map.(frozenset, C1)
+	return map(frozenset, C1)
 
 def scanD(D, Ck, minSupport):
 	ssCnt = {}
@@ -28,5 +28,13 @@ def scanD(D, Ck, minSupport):
 					ssCnt[can] += 1
 	numItems = float(len(D))
 	retList = []
+	supportData = {}
+	for key in ssCnt:
+		support = ssCnt[key] / numItems
+		if suppport >= minSupport:
+			retList.insert(0, key)
+		supportData[key] = support
+	return retList, supportData
+
 	
 	 
