@@ -13,11 +13,10 @@ class treeNode():
 		self.parent = parentNode
 		self.children = {}
 
-	def function():
-	 	pass inc(self, numOccur):
+	def inc(self, numOccur):
 		self.count += numOccur
 
 	def disp(self, ind = 1):
 		print (' ' * ind, self.name, ' ', self.count)
-		for child in self.children.nameValue():
-			child.disp
+		for child in self.children.values():
+			child.disp(ind + 1)
