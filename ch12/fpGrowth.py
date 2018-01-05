@@ -94,7 +94,7 @@ def findPrefixPath(basePat, treeNode):
 	return condPats
 
 def mineTree(inTree, headerTable, minSup, preFix, freqItemList):
-	bigL = [v[0] for v in sorted(headerTable.items(), key = lambda p: p[1])]	
+	bigL = [v[0] for v in sorted(headerTable.items(), key=lambda p: str(p[1]))]	
 	for basePat in bigL:
 		newFreqSet = preFix.copy()
 		newFreqSet.add(basePat)
@@ -103,3 +103,5 @@ def mineTree(inTree, headerTable, minSup, preFix, freqItemList):
 		myCondTree, myHead = createTree(condPattBases, minSup)
 		if myHead != None:
 			mineTree(myCondTree, myHead, minSup, newFreqSet, freqItemList)
+			print ('conditional tree for: ', newFreqSet)
+			myCondTree.disp()
